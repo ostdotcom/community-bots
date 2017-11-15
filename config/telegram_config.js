@@ -44,7 +44,7 @@ const production = {
 
   //Repeate Message Config
   ,REPEATE_IN_CHATS : []
-  ,REPEATE_MESSAGE_SEC: 15 * 60
+  ,REPEATE_MESSAGE_SEC: 60 * 60
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
 
 };
