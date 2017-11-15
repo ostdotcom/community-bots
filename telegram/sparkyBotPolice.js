@@ -134,5 +134,14 @@ config.REPEATE_IN_CHATS.forEach(function ( chatId ) {
 	repeater.start();
 });
 
+function reportBotBoot() {
+	var msgRepeaterText = "Message Repeater is not running on any chat.";
+	if ( config.REPEATE_IN_CHATS.length ) {
+		msgRepeaterText = "Message Repeater is ACTIVE for " + config.REPEATE_IN_CHATS.length + " chat(s)";
+	}
+	sparky.sendMessage(CHAT_REPORT, "Sparky is now online.\n" + msgRepeaterText );
+
+}
+reportBotBoot();
 
 sparky.startPolling();
