@@ -15,7 +15,7 @@ const sparky = new Slimbot(BOT_BENJAMINBOLLEN);
 var kickedBots = require('./kickedbots.json');
 
 var lastShownScamAlert = 1510713686; // 2:41:26 am UTC  |  Wednesday, November 15, 2017
-const HOLD_OFF_SCAM_ALERT_MIN = 10; // hold off for 5 min between alerts minimum
+const HOLD_OFF_SCAM_ALERT_MIN = 300; // hold off for 5 min between alerts minimum
 
 const scamAlert = '***************************************************\n\n' +
 "THE ONLY PLACE YOU CAN PURCHASE SIMPLE TOKENS IS AT https://sale.simpletoken.org  Please be sure you are logged in using your username and password. IF YOU SAW A DEPOSIT ADDRESS AND YOU WERE NOT LOGGED IN AT https://sale.simpletoken.org -- IGNORE IT, IT IS A SCAM.\n\n" + 
@@ -78,11 +78,6 @@ sparky.on('message', message => {
 		 		sparky.sendMessage(message.chat.id, humansOnly);
 		 		lastShownScamAlert = seconds_now();
 		 	}
-	 	}
-
-	 	if (!holdOffScamAlert()) {
-	 		sparky.sendMessage(message.chat.id, "hello Im a repeating bot;");
-	 		lastShownScamAlert = seconds_now();
 	 	}
 	}
 });
