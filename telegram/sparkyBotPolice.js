@@ -2,13 +2,22 @@ const Slimbot = require('slimbot');
 const FS = require('fs');
 const Path = require('path');
 const PM = require('./privateConversation.js');
-const chats = require('./configChats.js');
 
 // rachins bot 
 const OfficiaLSimpLeToken_bot = "330790032:AAH2l8hR3bw2t3yM_mRalgQKTQty1qH5h1Q";
 // @benjaminbollens_bot  t.me/benjaminbollens_bot
 const BEN_BADBOT_ID = 383374001;
 const BOT_BENJAMINBOLLEN = "438311760:AAEZnwm-sPvkcCBMRlgswO38VNuh_bcODmI";
+
+const CHAT_DEBUG_COMMUNITY = -1001215379313;
+const CHAT_DEBUG2_COMMUNITY = -309967655;
+const CHAT_DEBUG_ANNOUNCEMENTS = -1001320680086;
+const CHAT_DEBUG_REPORT = -227418557;
+
+var CHAT_COMMUNITY = CHAT_DEBUG_COMMUNITY;
+var CHAT_COMMUNITY2 = CHAT_DEBUG2_COMMUNITY;
+var CHAT_ANNOUNCEMENTS = CHAT_DEBUG_ANNOUNCEMENTS;
+var CHAT_REPORT = CHAT_DEBUG_REPORT;
 
 const sparky = new Slimbot(BOT_BENJAMINBOLLEN);
 
@@ -28,10 +37,10 @@ const scamAlert = '***************************************************\n\n' +
 function seconds_now(){ return Math.floor( Date.now() / 1000 ) }
 
 function reportBadBot(badbot, date) {
-	kickedBots[date] = {badbot, date};
-    const json = JSON.stringify(kickedBots, null, 4);
-    sparky.sendMessage(-227418557, "kicked bot "); //+ badbot.username +
-    	// " with id " + badbot.id);
+    sparky.sendMessage(CHAT_DEBUG_REPORT, "kicked out bot " + badbot.username +
+    	" with id " + badbot.id + );
+   	kickedBots[date] = {badbot, date};
+    const json = JSON.stringify(kickedBots);
     FS.writeFile(Path.join(__dirname, 'kickedbots.json'), json, function(err) {
 	    if(err) throw err;
 	    console.log("Updated kickedbots.json");
@@ -66,11 +75,13 @@ function holdOffScamAlert() {
 // Register listeners
 sparky.on('message', message => {
 	// Announcement channel
-	if (message.chat && message.chat.id == chats.CHAT_ANNOUNCEMENTS) {
+	if (message.chat && message.chat.id == CHAT_ANNOUNCEMENTS) {
 		// BotPolice ignores Annnouncement channel for now
 		return;
 	// Simple Token community channel
-	} else if (message.chat) { // && message.chat.id == CHAT_COMMUNITY) {
+	} else if (message.chat && (
+		message.chat.id == CHAT_COMMUNITY ||
+		message.chat.id == CHAT_COMMUNITY2)) {
 	 	badbot = kickIfNewUserIsBot(message);
 	 	if (badbot != undefined) {
 	 		if (!holdOffScamAlert()) {

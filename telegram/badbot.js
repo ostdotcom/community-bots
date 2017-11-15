@@ -31,8 +31,8 @@ badbot.on('message', message => {
 	 	badbot.sendMessage(message.chat.id, "Look at this other ICO!!")
 
 	 	// if (message.chat.text == 'leave') {
-	 		console.log("MOVE OUT");
-	 		badbot.leaveChat(message.chat.id);
+	 		// console.log("MOVE OUT");
+	 		// badbot.leaveChat(message.chat.id);
 	 	// }
 	} 
 
