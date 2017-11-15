@@ -3,6 +3,7 @@ const FS = require('fs');
 const Path = require('path');
 const PM = require('./privateConversation.js');
 const chats = require('./configChats.js');
+const TelegramConfig = require('../config/telegram_config');
 
 // rachins bot 
 const OfficiaLSimpLeToken_bot = "330790032:AAH2l8hR3bw2t3yM_mRalgQKTQty1qH5h1Q";

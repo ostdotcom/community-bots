@@ -1,50 +1,66 @@
 const Slimbot = require('slimbot');
 const FS = require('fs');
 const Path = require('path');
-const PM = require('./privateConversation.js');
+const config = require('../config/telegram_config');
+const logger = require('../helpers/CustomConsoleLogger');
+const Repeater = require('./MessageRepeater');
 
-// rachins bot 
-const OfficiaLSimpLeToken_bot = "330790032:AAH2l8hR3bw2t3yM_mRalgQKTQty1qH5h1Q";
-// @benjaminbollens_bot  t.me/benjaminbollens_bot
-const BEN_BADBOT_ID = 383374001;
-const BOT_BENJAMINBOLLEN = "438311760:AAEZnwm-sPvkcCBMRlgswO38VNuh_bcODmI";
+const kickedBotsDataFilePath  = './data/kickedbots.json';
+var kickedBots = require(  kickedBotsDataFilePath );
 
-const CHAT_DEBUG_COMMUNITY = -1001215379313;
-const CHAT_DEBUG2_COMMUNITY = -309967655;
-const CHAT_DEBUG_ANNOUNCEMENTS = -1001320680086;
-const CHAT_DEBUG_REPORT = -227418557;
+const sparky = new Slimbot( config.BOT_TOKEN );
 
-var CHAT_COMMUNITY = CHAT_DEBUG_COMMUNITY;
-var CHAT_COMMUNITY2 = CHAT_DEBUG2_COMMUNITY;
-var CHAT_ANNOUNCEMENTS = CHAT_DEBUG_ANNOUNCEMENTS;
-var CHAT_REPORT = CHAT_DEBUG_REPORT;
+logger.log("Environment:" , config.ENV);
 
-const sparky = new Slimbot(BOT_BENJAMINBOLLEN);
 
-var kickedBots = require('./kickedbots.json');
+//A list of chatIds to police.
+var policedChats = (config.POLICE_COMMUNITIES || []).concat([]);
 
-var lastShownScamAlert = 1510713686; // 2:41:26 am UTC  |  Wednesday, November 15, 2017
-const HOLD_OFF_SCAM_ALERT_MIN = 300; // hold off for 5 min between alerts minimum
+//A method to add chatIds to police.
+//Usage: addChatsToPolice(chatId1,chatId2.... );
+function addChatsToPolice() {
+	var args = Array.prototype.slice.call(arguments);
+	args.forEach(function ( chatId ) {
+		if ( policedChats.includes( chatId ) ) {
+			return;
+		}
+		policedChats.push( chatId );
+	});
+}
 
-const scamAlert = '***************************************************\n\n' +
-"THE ONLY PLACE YOU CAN PURCHASE SIMPLE TOKENS IS AT https://sale.simpletoken.org  Please be sure you are logged in using your username and password. IF YOU SAW A DEPOSIT ADDRESS AND YOU WERE NOT LOGGED IN AT https://sale.simpletoken.org -- IGNORE IT, IT IS A SCAM.\n\n" + 
-"PHISHING SCAM ALERT\n" + 
-"👀We will NEVER send you a private or direct message to share information or click through a link.\n" + 
-"👉Please beware of scammers posing as Simple Token execs and admins.\n\n" +
-"The only way to buy Simple Token is at https://sale.simpletoken.org\n\n" +
-"Please refer to official materials only. The Token Sale Registration Guide and the Purchase Guide can be found on https://sale.simpletoken.org\n\n";
+//Remove ChatIds to Monitor.
+//Usage: removeChatsToPolice(chatId1,chatId2.... );
+function removeChatsToPolice() {
+	var args = Array.prototype.slice.call(arguments);
+	args.forEach(function ( chatId ) {
+		var chatIndx = policedChats.indexOf( chatId );
+		if ( chatIndx > -1 ) {
+			policedChats.splice( chatIndx, 1 );
+		}		
+	});	
+}
+
+function shouldPoliceChat( chatId ) {
+	return policedChats.includes( chatId );
+}
+
+
+var CHAT_ANNOUNCEMENTS = config.ANNOUNCEMENTS_CHAT_ID;
+var CHAT_REPORT = config.REPORT_CHAT_ID;
+const HOLD_OFF_SCAM_ALERT_SEC = config.HOLD_OFF_SCAM_ALERT_SEC;
+
+var lastShownScamAlert = 0;
+
+
+const scamAlert = config.SCAM_ALERT_MSG;
 
 function seconds_now(){ return Math.floor( Date.now() / 1000 ) }
 
 function reportBadBot(badbot, date) {
-    sparky.sendMessage(CHAT_DEBUG_REPORT, "kicked out bot " + badbot.username +
-    	" with id " + badbot.id + );
+    sparky.sendMessage(CHAT_REPORT, "kicked out bot " + badbot.username +
+    	" with id " + badbot.id + "");
    	kickedBots[date] = {badbot, date};
-    const json = JSON.stringify(kickedBots);
-    FS.writeFile(Path.join(__dirname, 'kickedbots.json'), json, function(err) {
-	    if(err) throw err;
-	    console.log("Updated kickedbots.json");
-    });
+   	updateKickedBotsData();
 };
 
 function humansOnlyPolicy(badbot) {
@@ -66,7 +82,7 @@ function kickIfNewUserIsBot(message) {
 };
 
 function holdOffScamAlert() {
-	if (lastShownScamAlert + HOLD_OFF_SCAM_ALERT_MIN > seconds_now()) {
+	if (lastShownScamAlert + HOLD_OFF_SCAM_ALERT_SEC > seconds_now()) {
 		return true;
 	}
 	return false;
@@ -74,16 +90,21 @@ function holdOffScamAlert() {
 
 // Register listeners
 sparky.on('message', message => {
+	logger.log("on message triggered.");
+	if ( !message.chat ) {
+		logger.info("message does not have chat");
+		return;
+	}
+	logger.info("Chat : ", message.chat.id, " :: ", message.chat.title );
 	// Announcement channel
-	if (message.chat && message.chat.id == CHAT_ANNOUNCEMENTS) {
+	if (message.chat.id == CHAT_ANNOUNCEMENTS) {
 		// BotPolice ignores Annnouncement channel for now
 		return;
 	// Simple Token community channel
-	} else if (message.chat && (
-		message.chat.id == CHAT_COMMUNITY ||
-		message.chat.id == CHAT_COMMUNITY2)) {
+	} else if (message.chat && shouldPoliceChat( message.chat.id ) ) {
 	 	badbot = kickIfNewUserIsBot(message);
 	 	if (badbot != undefined) {
+	 		logger.win(" a bot was kicked.", badbot );
 	 		if (!holdOffScamAlert()) {
 		 		const humansOnly = humansOnlyPolicy(badbot);
 		 		sparky.sendMessage(message.chat.id, humansOnly);
@@ -93,6 +114,22 @@ sparky.on('message', message => {
 	}
 });
 
-// Call API
+function updateKickedBotsData() {
+  const json = JSON.stringify(kickedBots);
+  FS.writeFile(Path.join(__dirname, kickedBotsDataFilePath), json, function(err) {
+    if(err) {
+    	logger.error( err );
+    } else {
+    	logger.win("Updated kickedbots.json")
+    }
+  });
+}
+
+
+config.REPEATE_IN_CHATS.forEach(function ( chatId ) {
+	var repeater =  new Repeater(chatId, config.MESSAGE_TO_REPEATE, config.REPEATE_MESSAGE_SEC, sparky);
+	repeater.start();
+});
+
 
 sparky.startPolling();

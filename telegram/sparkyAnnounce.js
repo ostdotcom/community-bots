@@ -2,6 +2,7 @@ const Slimbot = require('slimbot');
 const FS = require('fs');
 const Path = require('path');
 const PM = require('./privateConversation.js');
+const TelegramConfig = require('../config/telegram_config');
 const announcements = require('./announcements.js');
 
 // rachins bot 

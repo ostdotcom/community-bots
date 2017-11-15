@@ -7,7 +7,7 @@ function seconds_now(){ return Math.floor( Date.now() / 1000 ) }
 
 function newAnnouncement(name, message) {
 	// store message and when last sent
-	announcements[name] = createAnnouncement( name, message )
+	announcements[name] = createAnnouncement( name, message );
 	FS.writeFile(Path.join(__dirname, 'knowledge.json'), json, function(err) {
 	    if(err) throw err;
 	    console.log("Updated knowledge.json");
