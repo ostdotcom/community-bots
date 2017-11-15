@@ -12,7 +12,7 @@ const development = {
   ,CHAT_TYPE_PRIVATE : 'private'
 
   //Scam Alert Config
-  ,SCAM_ALERT_MSG: fs.readFileSync('../telegram/messages/KickedMessage.txt', 'utf8')
+  ,MESSAGE_ON_KICK: fs.readFileSync('../telegram/messages/KickedMessage.txt', 'utf8')
   ,HOLD_OFF_SCAM_ALERT_SEC: 10
 
   //Repeate Message Config
@@ -39,7 +39,7 @@ const production = {
   ,CHAT_TYPE_PRIVATE : 'private'
 
   //Scam Alert Config
-  ,SCAM_ALERT_MSG: fs.readFileSync('../telegram/messages/KickedMessage.txt', 'utf8')
+  ,MESSAGE_ON_KICK: fs.readFileSync('../telegram/messages/KickedMessage.txt', 'utf8')
   ,HOLD_OFF_SCAM_ALERT_SEC: 300
 
   //Repeate Message Config

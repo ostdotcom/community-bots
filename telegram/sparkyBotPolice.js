@@ -49,10 +49,10 @@ var CHAT_ANNOUNCEMENTS = config.ANNOUNCEMENTS_CHAT_ID;
 var CHAT_REPORT = config.REPORT_CHAT_ID;
 const HOLD_OFF_SCAM_ALERT_SEC = config.HOLD_OFF_SCAM_ALERT_SEC;
 
-var lastShownScamAlert = 0;
+var lastShownKickAlert = 0;
 
 
-const scamAlert = config.SCAM_ALERT_MSG;
+const kickAlert = config.MESSAGE_ON_KICK;
 
 function seconds_now(){ return Math.floor( Date.now() / 1000 ) }
 
@@ -64,9 +64,12 @@ function reportBadBot(badbot, date) {
 };
 
 function humansOnlyPolicy(badbot) {
-	return scamAlert + 
-		"For your safety we kicked " + badbot.username + " out because it was a telegram bot.\n\n" +
-		"***************************************************";
+	return kickAlert + 
+		"\n\nThis bot just banned an intruder " + badbot.username 
+		+"\nWe do our best to protect the community. If you see a scammer, please report them."
+		+ "\n***********************"
+		+ "\nST BOT PROTECTOR"
+		+ "\n***********************";
 }
 
 
@@ -81,8 +84,8 @@ function kickIfNewUserIsBot(message) {
 	}
 };
 
-function holdOffScamAlert() {
-	if (lastShownScamAlert + HOLD_OFF_SCAM_ALERT_SEC > seconds_now()) {
+function holdOffKickAlert() {
+	if (lastShownKickAlert + HOLD_OFF_SCAM_ALERT_SEC > seconds_now()) {
 		return true;
 	}
 	return false;
@@ -105,10 +108,10 @@ sparky.on('message', message => {
 	 	badbot = kickIfNewUserIsBot(message);
 	 	if (badbot != undefined) {
 	 		logger.win(" a bot was kicked.", badbot );
-	 		if (!holdOffScamAlert()) {
+	 		if (!holdOffKickAlert()) {
 		 		const humansOnly = humansOnlyPolicy(badbot);
 		 		sparky.sendMessage(message.chat.id, humansOnly);
-		 		lastShownScamAlert = seconds_now();
+		 		lastShownKickAlert = seconds_now();
 		 	}
 	 	}
 	}
