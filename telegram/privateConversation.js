@@ -1,6 +1,6 @@
 // Copyright Simple Token Company
 
-var nlp = require('compromise');
+// var nlp = require('compromise');
 
 var users = {}
 
