@@ -1,0 +1,91 @@
+
+
+// { message_id: 61,
+//   from: { id: 336537509, is_bot: false, first_name: 'Banks' },
+//   chat: 
+//    { id: -182770788,
+//      title: 'BensBotchannel',
+//      type: 'group',
+//      all_members_are_administrators: true },
+//   date: 1510702017,
+//   new_chat_participant: 
+//    { id: 330790032,
+//      is_bot: true,
+//      first_name: 'OfficiaLSimpLeTokenBot',
+//      username: 'OfficiaLSimpLeToken_bot' },
+//   new_chat_member: 
+//    { id: 330790032,
+//      is_bot: true,
+//      first_name: 'OfficiaLSimpLeTokenBot',
+//      username: 'OfficiaLSimpLeToken_bot' },
+//   new_chat_members: 
+//    [ { id: 330790032,
+//        is_bot: true,
+//        first_name: 'OfficiaLSimpLeTokenBot',
+//        username: 'OfficiaLSimpLeToken_bot' } ] }
+
+
+// Received a message
+// { message_id: 6,
+//   from: 
+//    { id: 287665506,
+//      is_bot: false,
+//      first_name: 'Benjamin',
+//      last_name: 'Bollen',
+//      username: 'benjaminbollen' },
+//   chat: 
+//    { id: -265214519,
+//      title: 'Announcements',
+//      type: 'group',
+//      all_members_are_administrators: true },
+//   date: 1510691507,
+//   text: 'hi' }
+
+
+// Received a message
+// { message_id: 12114,
+//   from: 
+//    { id: 467280401,
+//      is_bot: false,
+//      first_name: 'daniel',
+//      last_name: 'ttberg',
+//      username: 'danielttberg' },
+//   chat: 
+//    { id: -1001138398611,
+//      title: 'Simple Token Community',
+//      username: 'simpletoken',
+//      type: 'supergroup' },
+//   date: 1510691604,
+//   new_chat_participant: 
+//    { id: 467280401,
+//      is_bot: false,
+//      first_name: 'daniel',
+//      last_name: 'ttberg',
+//      username: 'danielttberg' },
+//   new_chat_member: 
+//    { id: 467280401,
+//      is_bot: false,
+//      first_name: 'daniel',
+//      last_name: 'ttberg',
+//      username: 'danielttberg' },
+//   new_chat_members: 
+//    [ { id: 467280401,
+//        is_bot: false,
+//        first_name: 'daniel',
+//        last_name: 'ttberg',
+//        username: 'danielttberg' } ] }
+
+// Received a message
+// { message_id: 1,
+//   from: 
+//    { id: 287665506,
+//      is_bot: false,
+//      first_name: 'Benjamin',
+//      last_name: 'Bollen',
+//      username: 'benjaminbollen' },
+//   chat: 
+//    { id: -1001215379313,
+//      title: 'BensBotchannel',
+//      type: 'supergroup' },
+//   date: 1510705614,
+//   migrate_from_chat_id: -182770788 }
