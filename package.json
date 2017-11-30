@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "fast-csv": "^2.4.1",
     "slimbot": "^0.7.8"
   }
 }
