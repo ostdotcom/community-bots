@@ -15,6 +15,7 @@ logger.log("Environment:" , config.ENV);
 
 //A list of chatIds to police.
 var policedChats = (config.POLICE_COMMUNITIES || []).concat([]);
+var scanUsersChats = (config.POLICE_COMMUNITIES || []).concat([]);
 
 //A method to add chatIds to police.
 //Usage: addChatsToPolice(chatId1,chatId2.... );
@@ -42,6 +43,10 @@ function removeChatsToPolice() {
 
 function shouldPoliceChat( chatId ) {
 	return policedChats.includes( chatId );
+}
+
+function shouldScanUsersInChat( chatId ) {
+	return scanUsersChats.includes( chatId );
 }
 
 
@@ -84,6 +89,127 @@ function kickIfNewUserIsBot(message) {
 	}
 };
 
+function kickIfBlackListedUser(message) {
+	if (message.chat && (message.new_chat_member || message.from)){
+		var firstName = null;
+		var lastName = null;
+        var userName = null;
+		if (message.new_chat_member) {
+		 	firstName = message.new_chat_member.first_name;
+		 	lastName = message.new_chat_member.last_name;
+		 	userName = message.new_chat_member.username;
+		 	if (isUserBlackListed(firstName,lastName,userName)) {
+			logger.info("kick user");
+			//sparky.kickChatMember(message.chat.id, message.new_chat_member.id);
+			return message.new_chat_member;
+		  }
+		} else if (message.from) {
+		 	firstName = message.from.first_name;
+		  	lastName = message.from.last_name;
+		 	userName = message.from.username;
+		 	if (isUserBlackListed(firstName,lastName,userName)) {
+			logger.info("kick user");
+			//sparky.kickChatMember(message.chat.id, message.new_chat_member.id);
+			return message.from;
+			}
+		}
+	}
+}
+
+
+/******************* Read Blocked Users ***********************/
+var csv = require("fast-csv");
+
+const blackListedUsers = [];
+csv
+ .fromPath("./data/blacklistedusers.csv")
+ .on("data", function(data){
+ 	 console.log(data);
+     blackListedUsers.push(data[0].toUpperCase());
+ })
+ .on("end", function(){
+    
+ });
+
+
+ function  isUserBlackListed(firstName, lastName, username) {
+    logger.info(firstName + " "+ lastName + " "+ username );
+    for (var i=0;i<blackListedUsers.length; i++) {
+    	var data = blackListedUsers[i];
+    	logger.info(data);
+    	if (checkNormalisedName(firstName, data) || checkNormalisedName(lastName,data) || checkNormalisedName(username,data)) {
+    		return true;
+    	}
+    }
+    return false;
+  }
+
+  function checkNormalisedName(name, data) {
+  	if (name == undefined || data == undefined) {
+  		return false;
+  	}
+  	if (name.toUpperCase() === data) {
+  			return true;
+  	}
+  	var nameArray = name.split(/[0-9\*\!\@\#\$\%\^\&\(\)\_\-\+\=\~\~\:\"\'\/\.\>\,\<\[\{\]\}\ `]/)
+  	
+  	var nameNormalised = nameArray.join("").toUpperCase();
+  	if(nameNormalised.includes(data)) {
+     		return true;
+    }
+  	return false;
+  }
+
+  function handleChatCommand(message) {
+  	if (message.chat && message.text) {
+		var command = message.text.split(' ');
+		if(command[0] == '/test') {
+			if(isUserBlackListed(message.text, undefined, undefined)) {
+				sparky.sendMessage(message.chat.id,  command[1] + " is a potential scam user");
+			} else {
+				sparky.sendMessage(message.chat.id,  command[1] + " is not a scam user");
+			}
+			return true;
+		}
+	}
+	return false;
+  }
+/************************* End **********************************/
+
+
+/******************* Read WhiteListed Users ***********************/
+
+const whiteListedUsers = [];
+csv
+ .fromPath("./data/whitelistedusers.csv")
+ .on("data", function(data){
+ 	 console.log(data);
+     whiteListedUsers.push(data[0].toUpperCase());
+ })
+ .on("end", function(){
+    
+ });
+
+
+function  isUserWhiteListed(username) {
+	logger.info( username );
+	if (username == undefined) {
+		return false;
+	}
+    for (var i=0;i < whiteListedUsers.length; i++) {
+    	var data = whiteListedUsers[i];
+    	logger.info(data);
+    	if (checkNormalisedName(username, data)) {
+    		return true;
+    	}
+    }
+    return false;
+  }
+
+
+/*********************** End *****************************/
+var csv = require("fast-csv");
+
 function holdOffKickAlert() {
 	if (lastShownKickAlert + HOLD_OFF_SCAM_ALERT_SEC > seconds_now()) {
 		return true;
@@ -98,13 +224,24 @@ sparky.on('message', message => {
 		logger.info("message does not have chat");
 		return;
 	}
+	logger.info(message);
 	logger.info("Chat : ", message.chat.id, " :: ", message.chat.title );
+
+	// Commad Test
+	if (config.ENV === "development" && handleChatCommand(message)) {
+		return;
+	}
+
 	// Announcement channel
 	if (message.chat.id == CHAT_ANNOUNCEMENTS) {
 		// BotPolice ignores Annnouncement channel for now
 		return;
 	// Simple Token community channel
-	} else if (message.chat && shouldPoliceChat( message.chat.id ) ) {
+	} else if (message.chat && (shouldPoliceChat( message.chat.id ) || shouldScanUsersInChat(message.chat.id) )) {
+		if( (message.from && isUserWhiteListed(message.from.username)) || (message.new_chat_member && isUserWhiteListed(message.new_chat_member.username))) {
+			logger.win("A whitelisted user detected");
+			return;
+		}
 	 	badbot = kickIfNewUserIsBot(message);
 	 	if (badbot != undefined) {
 	 		logger.win(" a bot was kicked.", badbot );
@@ -113,8 +250,18 @@ sparky.on('message', message => {
 		 		sparky.sendMessage(message.chat.id, humansOnly);
 		 		lastShownKickAlert = seconds_now();
 		 	}
-	 	}
+	 	} 
+	 	blacklistedUser = kickIfBlackListedUser(message);
+	 	if (blacklistedUser != undefined) {
+	 		logger.win("A potential scammer is detected.", blacklistedUser );
+
+	 		sparky.sendMessage(CHAT_REPORT,  
+	 			"[" + blacklistedUser.first_name + "]" + "(tg://user?id="+ blacklistedUser.id + ")"
+	 			+ " potential scam user is detected", { parse_mode: "Markdown" });
+
+	 	} 
 	}
+
 });
 
 function updateKickedBotsData() {
