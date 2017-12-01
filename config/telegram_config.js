@@ -53,6 +53,8 @@ const production = {
   //Repeate Message Config
   ,REPEATE_IN_CHATS : [ CHAT_SIMPLETOKEN_COMMUNITY ]
   ,REPEATE_MESSAGE_SEC: 60*60
+  //Scan link in chats
+  ,REPEATED_CHAT_PIN_MSG_ID : CHAT_ST_BOT_ACTIVITY_REPORTS
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
 
   //Scan user chats
@@ -61,8 +63,6 @@ const production = {
   //Scan link in chats
   ,SCAN_LINKS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
 
-  //Scan link in chats
-  ,REPEATED_CHAT_PIN_MSG_ID : CHAT_ST_BOT_ACTIVITY_REPORTS
 
 };
 

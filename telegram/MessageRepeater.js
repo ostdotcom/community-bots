@@ -26,28 +26,34 @@ Repeater.prototype = {
     }
     this.isPaused = true;
   },
-  performNext: function () {
+  performNext: async function () {
     var oThis = this;
+    var messageToSend = oThis.message;
 
     if ( oThis.isPaused ) {
       return;
     }
     logger.info("\t\tSending Message to chatId : " , oThis.chatId );
+
+
+    await new Promise( function (resolve, reject ) {
+      //Query for pined message and update the message for repeater.
+      oThis.slimbot.getChat(config.REPEATED_CHAT_PIN_MSG_ID, function(error, response) {
+        if (response.result && response.result.pinned_message) {
+            console.log("\n\n\n\n\npinned message data");
+            console.log(response.result.pinned_message.text);
+            messageToSend = response.result.pinned_message.text;
+        } else {
+            messageToSend = oThis.message;
+        }
+        resolve( messageToSend );
+      });
+    });
     
-    //Query for pined message and update the message for repeater.
-    oThis.slimbot.getChat(config.REPEATED_CHAT_PIN_MSG_ID, function(error, response){
-         if (response.result && response.result.pinned_message) {
-              console.log("\n\n\n\n\npinned message data");
-              console.log(response.result.pinned_message.text);
-              oThis.tempMessage = response.result.pinned_message.text;
-          } else {
-              oThis.tempMessage = oThis.message;
-          }
-       });
 
     //Send the message.
     oThis.slimbot
-      .sendMessage( oThis.chatId, oThis.tempMessage )
+      .sendMessage( oThis.chatId, messageToSend )
       .then(_ => {
         logger.info("\t\tSRepeated message on chatId : " , oThis.chatId );
       })
