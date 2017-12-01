@@ -1,12 +1,14 @@
 const fs = require('fs');
 
+const st_dev_community_1 = -1001233882429;
+const st_dev_report_chat = -1001161646688;
 
 const development = {
   BOT_TOKEN: "494907220:AAHMhxNkcnatkyhzqwuGtbUS-U6AvDg0MO4"
   ,ENV: "development"
-  ,POLICE_COMMUNITIES: [-257353504 ]
+  ,POLICE_COMMUNITIES: [ st_dev_community_1 ]
   ,ANNOUNCEMENTS_CHAT_ID : -1001320680086
-  ,REPORT_CHAT_ID : -1001161646688
+  ,REPORT_CHAT_ID : st_dev_report_chat
   ,CHAT_TYPE_SUPERGROUP : 'supergroup'
   ,CHAT_TYPE_GROUP : 'group'
   ,CHAT_TYPE_PRIVATE : 'private'
@@ -16,18 +18,20 @@ const development = {
   ,HOLD_OFF_SCAM_ALERT_SEC: 10
 
   //Repeate Message Config
-  ,REPEATE_IN_CHATS : [-257353504 ]
+  ,REPEATE_IN_CHATS : [ st_dev_community_1 ]
   ,REPEATE_MESSAGE_SEC: 30
-  //,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
-  ,MESSAGE_TO_REPEATE: '@Sachin_Pepo ***\n\nWelcome to the Simple Token Community on Telegram. This channel is moderated by our team. Off topic posts will be removed. Beware of scammers. Report spammers. Only trust known admins. We never request personal data on Telegram.\n\n🙋Please make sure to also join ST Official https://t.me/STofficial our announcement channel: All the ST news, none of the noise.'
+  ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
+  
   //Scan user chats
-  ,SCAN_USERS_CHATS : [-257353504]
+  ,SCAN_USERS_CHATS : [ st_dev_community_1 ]
 
   //Scan link in chats
-  ,SCAN_LINKS_CHATS : [-257353504]
+  ,SCAN_LINKS_CHATS : [ st_dev_community_1 ]
 
-  //Scan link in chats
-  ,REPEATED_CHAT_PIN_MSG_ID : -1001161646688
+  //REPEATED CHAT PIN MSG ID
+  ,REPEATE_PINNED_MSG_TEXT : "Thanks for a successful token sale! The sale has ended. The Simple Token team has provided answers to many of the most common questions. [link]"
+  ,REPEATED_CHAT_PIN_MSG_ID : null
+  
 
 };
 
@@ -53,16 +57,16 @@ const production = {
   //Repeate Message Config
   ,REPEATE_IN_CHATS : [ CHAT_SIMPLETOKEN_COMMUNITY ]
   ,REPEATE_MESSAGE_SEC: 60*60
-  //Scan link in chats
-  ,REPEATED_CHAT_PIN_MSG_ID : CHAT_ST_BOT_ACTIVITY_REPORTS
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
 
   //Scan user chats
   ,SCAN_USERS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
-
   //Scan link in chats
   ,SCAN_LINKS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
 
+  //Repeate Pinned Message.
+
+  ,REPEATED_CHAT_PIN_MSG_ID : null
 
 };
 
@@ -89,6 +93,4 @@ const OfficiaLSimpLeToken_bot = "330790032:AAH2l8hR3bw2t3yM_mRalgQKTQty1qH5h1Q";
 const BEN_BADBOT_ID = 383374001;
 const BOT_BENJAMINBOLLEN = "438311760:AAEZnwm-sPvkcCBMRlgswO38VNuh_bcODmI";
 
-const st_dev_community_1 = -257353504;
-const st_dev_report_chat = -251881133;
 

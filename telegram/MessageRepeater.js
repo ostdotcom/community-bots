@@ -36,19 +36,21 @@ Repeater.prototype = {
     logger.info("\t\tSending Message to chatId : " , oThis.chatId );
 
 
-    await new Promise( function (resolve, reject ) {
-      //Query for pined message and update the message for repeater.
-      oThis.slimbot.getChat(config.REPEATED_CHAT_PIN_MSG_ID, function(error, response) {
-        if (response.result && response.result.pinned_message) {
-            console.log("\n\n\n\n\npinned message data");
-            console.log(response.result.pinned_message.text);
-            messageToSend = response.result.pinned_message.text;
-        } else {
-            messageToSend = oThis.message;
-        }
-        resolve( messageToSend );
+    if ( config.REPEATED_CHAT_PIN_MSG_ID ) {
+      await new Promise( function (resolve, reject ) {
+        //Query for pined message and update the message for repeater.
+        oThis.slimbot.getChat(config.REPEATED_CHAT_PIN_MSG_ID, function(error, response) {
+          if (response.result && response.result.pinned_message) {
+              console.log("\n\n\n\n\npinned message data");
+              console.log(response.result.pinned_message.text);
+              messageToSend = response.result.pinned_message.text;
+          } else {
+              messageToSend = oThis.message;
+          }
+          resolve( messageToSend );
+        });
       });
-    });
+    }
     
 
     //Send the message.
