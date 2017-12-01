@@ -6,7 +6,7 @@ const development = {
   ,ENV: "development"
   ,POLICE_COMMUNITIES: [-257353504 ]
   ,ANNOUNCEMENTS_CHAT_ID : -1001320680086
-  ,REPORT_CHAT_ID : -251881133
+  ,REPORT_CHAT_ID : -1001161646688
   ,CHAT_TYPE_SUPERGROUP : 'supergroup'
   ,CHAT_TYPE_GROUP : 'group'
   ,CHAT_TYPE_PRIVATE : 'private'
@@ -16,16 +16,24 @@ const development = {
   ,HOLD_OFF_SCAM_ALERT_SEC: 10
 
   //Repeate Message Config
-  ,REPEATE_IN_CHATS : [ -257353504 ]
-  ,REPEATE_MESSAGE_SEC: 60
-  ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
+  ,REPEATE_IN_CHATS : [-257353504 ]
+  ,REPEATE_MESSAGE_SEC: 30
+  //,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
+  ,MESSAGE_TO_REPEATE: '@Sachin_Pepo ***\n\nWelcome to the Simple Token Community on Telegram. This channel is moderated by our team. Off topic posts will be removed. Beware of scammers. Report spammers. Only trust known admins. We never request personal data on Telegram.\n\n🙋Please make sure to also join ST Official https://t.me/STofficial our announcement channel: All the ST news, none of the noise.'
+  //Scan user chats
+  ,SCAN_USERS_CHATS : [-257353504]
 
+  //Scan link in chats
+  ,SCAN_LINKS_CHATS : [-257353504]
+
+  //Scan link in chats
+  ,REPEATED_CHAT_PIN_MSG_ID : -1001161646688
 
 };
 
 /* BEGIN : DO NOT TOUCH THESE */
 const CHAT_SIMPLETOKEN_COMMUNITY = -1001138398611;
-const CHAT_ST_BOT_ACTIVITY_REPORTS = -294535425;
+const CHAT_ST_BOT_ACTIVITY_REPORTS = -1001376936450;
 /* END OF: DO NOT TOUCH THESE */
 
 const production = {
@@ -43,9 +51,18 @@ const production = {
   ,HOLD_OFF_SCAM_ALERT_SEC: 300
 
   //Repeate Message Config
-  ,REPEATE_IN_CHATS : []
-  ,REPEATE_MESSAGE_SEC: 60 * 60
+  ,REPEATE_IN_CHATS : [ CHAT_SIMPLETOKEN_COMMUNITY ]
+  ,REPEATE_MESSAGE_SEC: 60*60
+  //Scan link in chats
+  ,REPEATED_CHAT_PIN_MSG_ID : CHAT_ST_BOT_ACTIVITY_REPORTS
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
+
+  //Scan user chats
+  ,SCAN_USERS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
+
+  //Scan link in chats
+  ,SCAN_LINKS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
+
 
 };
 
