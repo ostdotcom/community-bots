@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "parse-uri": "^1.0.0",
+    "fast-csv": "^2.4.1",
     "slimbot": "^0.7.8"
   }
 }
