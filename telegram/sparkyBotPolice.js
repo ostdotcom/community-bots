@@ -130,7 +130,6 @@ const blackListedUsers = [];
 csv
  .fromPath("./data/blacklistedusers.csv")
  .on("data", function(data){
- 	 console.log(data);
      blackListedUsers.push(data[0].toUpperCase());
  })
  .on("end", function(){
@@ -142,7 +141,6 @@ csv
     logger.info(firstName + " "+ lastName + " "+ username );
     for (var i=0;i<blackListedUsers.length; i++) {
     	var data = blackListedUsers[i];
-    	logger.info(data);
     	if (checkNormalisedName(firstName, data) || checkNormalisedName(lastName,data) || checkNormalisedName(username,data)) {
     		return true;
     	}
@@ -189,7 +187,6 @@ const whiteListedUsers = [];
 csv
  .fromPath("./data/whitelistedusers.csv")
  .on("data", function(data){
- 	 console.log(data);
      whiteListedUsers.push(data[0].toUpperCase());
  })
  .on("end", function(){
@@ -220,7 +217,6 @@ const whiteListedLinks = [];
 csv
  .fromPath("./data/whitelistedlinks.csv")
  .on("data", function(data){
- 	 console.log(data);
      whiteListedLinks.push(data[0].toUpperCase());
  })
  .on("end", function(){
@@ -243,7 +239,6 @@ function isWhiteListedLink(link){
 	for (var i=0;i < whiteListedLinks.length; i++) {
     	var data = whiteListedLinks[i];
     	var parsedLink = parseUri(link);
-		logger.info(parsedLink);
     	if(parsedLink.host != undefined && parsedLink.host == data) {
     		return true;
     	}
@@ -311,8 +306,16 @@ sparky.on('message', message => {
 
 		handleLinkDetection(message);
 	}
-
 });
+
+// function handlePinMessage(messageObject) {
+// 	if (messageObject.pinned_message) {
+// 		pinnedMsg = messageObject.pinned_message;
+// 		config.MESSAGE_TO_REPEATE = pinnedMsg;
+// 		console.log(config.MESSAGE_TO_REPEATE);
+// 		console.log(pinnedMsg);
+// 	}
+// }
 
 function handleLinkDetection(messageObject) {
  	if (shouldScanLinksInChat(messageObject.chat.id) && shouldWarnForLink(messageObject)) {
