@@ -23,6 +23,9 @@ const development = {
   //Scan user chats
   ,SCAN_USERS_CHATS : [-257353504]
 
+  //Scan link in chats
+  ,SCAN_LINKS_CHATS : [-257353504]
+
 };
 
 /* BEGIN : DO NOT TOUCH THESE */
@@ -51,6 +54,9 @@ const production = {
 
   //Scan user chats
   ,SCAN_USERS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
+
+  //Scan link in chats
+  ,SCAN_LINKS_CHATS : [CHAT_SIMPLETOKEN_COMMUNITY]
 
 };
 

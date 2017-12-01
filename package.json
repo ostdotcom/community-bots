@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "parse-uri": "^1.0.0",
     "slimbot": "^0.7.8"
   }
 }
