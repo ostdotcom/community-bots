@@ -76,11 +76,11 @@ function reportBadBot(badbot, date) {
 
 function humansOnlyPolicy(badbot) {
 	return kickAlert + 
-		"\n\nThis bot just banned an intruder " + badbot.username 
+		"\nThis bot just banned a suspected intruder: " + badbot.username 
 		+"\nWe do our best to protect the community. If you see a scammer, please report them."
-		+ "\n***********************"
+		+ "\n***************"
 		+ "\nST BOT PROTECTOR"
-		+ "\n***********************";
+		+ "\n***************"
 }
 
 

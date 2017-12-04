@@ -19,7 +19,7 @@ const development = {
 
   //Repeate Message Config
   ,REPEATE_IN_CHATS : [ st_dev_community_1 ]
-  ,REPEATE_MESSAGE_SEC: 30
+  ,REPEATE_MESSAGE_SEC: 60 * 10
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
   
   //Scan user chats
