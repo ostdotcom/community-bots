@@ -30,7 +30,7 @@ const development = {
 
   //REPEATED CHAT PIN MSG ID
   ,REPEATE_PINNED_MSG_TEXT : "Thanks for a successful token sale! The sale has ended. The Simple Token team has provided answers to many of the most common questions. [link]"
-  ,REPEATED_CHAT_PIN_MSG_ID : st_dev_community_1
+  ,REPEATED_CHAT_PIN_MSG_ID : null
   
   ,PUBLIC_COMMUNITY_USERNAME : "stdevcommunity"
 
