@@ -2,7 +2,6 @@ const logger = require('../helpers/CustomConsoleLogger');
 const config = require('../config/telegram_config');
 function Repeater( chatId, message, repeateDurationInSec, slimbot) {
   this.message = message;
-  this.tempMessage = message;
   this.repeateDurationInSec = repeateDurationInSec;
   this.slimbot = slimbot;
   this.chatId = chatId;
@@ -37,15 +36,13 @@ Repeater.prototype = {
 
 
     if ( config.REPEATED_CHAT_PIN_MSG_ID ) {
-      await new Promise( function (resolve, reject ) {
+       await new Promise( function (resolve, reject ) {
         //Query for pined message and update the message for repeater.
         oThis.slimbot.getChat(config.REPEATED_CHAT_PIN_MSG_ID, function(error, response) {
           if (response.result && response.result.pinned_message) {
               console.log("\n\n\n\n\npinned message data");
-              console.log(response.result.pinned_message.text);
-              messageToSend = response.result.pinned_message.text;
-          } else {
-              messageToSend = oThis.message;
+              console.log(response.result.pinned_message);
+              messageToSend = "t.me/"+config.PUBLIC_COMMUNITY_USERNAME + "/" + response.result.pinned_message.message_id;
           }
           resolve( messageToSend );
         });
