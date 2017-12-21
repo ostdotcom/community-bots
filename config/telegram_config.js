@@ -19,7 +19,7 @@ const development = {
 
   //Repeate Message Config
   ,REPEATE_IN_CHATS : [ st_dev_community_1 ]
-  ,REPEATE_MESSAGE_SEC: 60 * 10
+  ,REPEATE_MESSAGE_SEC: 1 * 10
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
   
   //Scan user chats
@@ -30,9 +30,11 @@ const development = {
 
   //REPEATED CHAT PIN MSG ID
   ,REPEATE_PINNED_MSG_TEXT : "Thanks for a successful token sale! The sale has ended. The Simple Token team has provided answers to many of the most common questions. [link]"
-  ,REPEATED_CHAT_PIN_MSG_ID : null
+  ,REPEATED_CHAT_PIN_MSG_ID : st_dev_community_1
   
   ,PUBLIC_COMMUNITY_USERNAME : "stdevcommunity"
+
+  ,REPEATED_CHAT_MSG_LIMIT : 2
 
 };
 
@@ -71,6 +73,7 @@ const production = {
 
   ,PUBLIC_COMMUNITY_USERNAME : "stofficial"
 
+  ,REPEATED_CHAT_MSG_LIMIT : 10
 };
 
 

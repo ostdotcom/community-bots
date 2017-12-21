@@ -14,6 +14,8 @@ Repeater.prototype = {
   sendOptions: null,
   repeateDurationInSec: -1,
   isPaused: true,
+  shouldSend: true,
+  messageCount: 0,
   start: function () {
     if ( !this.isPaused ) {
       return;
@@ -31,10 +33,24 @@ Repeater.prototype = {
     var oThis = this;
     var messageToSend = oThis.message;
 
+    if ( !oThis.shouldSend ) {
+      //Schedule next.
+      if ( oThis.repeateDurationInSec > 0 ) {      
+        setTimeout(function () {
+        oThis.performNext();
+        }, oThis.repeateDurationInSec * 1000);
+        }
+        return;
+    }
+
     if ( oThis.isPaused ) {
       return;
     }
     logger.info("\t\tSending Message to chatId : " , oThis.chatId );
+
+    // Update message sending variables
+    oThis.shouldSend = false;
+    oThis.messageCount = 0;
 
 
     if ( config.REPEATED_CHAT_PIN_MSG_ID ) {
@@ -70,6 +86,15 @@ Repeater.prototype = {
         oThis.performNext();
       }, oThis.repeateDurationInSec * 1000);
     }
+
+  },
+
+  updateMessageCounter: function() {
+      this.messageCount++;
+      if (config.REPEATED_CHAT_MSG_LIMIT < this.messageCount) {
+          this.shouldSend = true;
+      }
+      logger.info("MessageCounter : " , this.messageCount, this.shouldSend );
 
   }
 }

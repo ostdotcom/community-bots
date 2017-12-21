@@ -295,6 +295,8 @@ sparky.on('message', message => {
 	// Simple Token community channel
 	} else if (message.chat || messageObject.new_chat_member) {
 		
+		handleMessageCountUpate(message.chat.id);
+
 		handlePoliceChat(message);
 
 		if( (message.from && isUserWhiteListed(message.from.username)) || (message.new_chat_member && isUserWhiteListed(message.new_chat_member.username))) {
@@ -374,11 +376,20 @@ function updateKickedBotsData() {
   });
 }
 
+var chatMap = {}
 
 config.REPEATE_IN_CHATS.forEach(function ( chatId ) {
 	var repeater =  new Repeater(chatId, config.MESSAGE_TO_REPEATE, config.REPEATE_MESSAGE_SEC, sparky, { parse_mode: "html"});
 	repeater.start();
+	chatMap[chatId] = repeater;
 });
+
+function handleMessageCountUpate(chatId) {
+	if (chatId && chatMap[chatId]) {
+		chatMap[chatId].updateMessageCounter();
+		logger.info("Message Count Updated called");
+	}
+}
 
 function reportBotBoot() {
 	var msgRepeaterText = "Message Repeater is not running on any chat.";
