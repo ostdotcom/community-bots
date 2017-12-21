@@ -14,8 +14,7 @@ Repeater.prototype = {
   sendOptions: null,
   repeateDurationInSec: -1,
   isPaused: true,
-  shouldSend: true,
-  messageCount: 0,
+  messageCount: config.REPEATED_CHAT_MSG_LIMIT + 1,
   start: function () {
     if ( !this.isPaused ) {
       return;
@@ -33,7 +32,7 @@ Repeater.prototype = {
     var oThis = this;
     var messageToSend = oThis.message;
 
-    if ( !oThis.shouldSend ) {
+    if ( !oThis.shouldSend() ) {
       //Schedule next.
       if ( oThis.repeateDurationInSec > 0 ) {      
         setTimeout(function () {
@@ -47,11 +46,6 @@ Repeater.prototype = {
       return;
     }
     logger.info("\t\tSending Message to chatId : " , oThis.chatId );
-
-    // Update message sending variables
-    oThis.shouldSend = false;
-    oThis.messageCount = 0;
-
 
     if ( config.REPEATED_CHAT_PIN_MSG_ID ) {
        await new Promise( function (resolve, reject ) {
@@ -72,6 +66,8 @@ Repeater.prototype = {
     oThis.slimbot
       .sendMessage( oThis.chatId, messageToSend, oThis.sendOptions )
       .then(_ => {
+      	 // Update message sending variables
+         oThis.messageCount = 0;
         logger.info("\t\tSRepeated message on chatId : " , oThis.chatId );
       })
       .catch(reason => {
@@ -91,11 +87,15 @@ Repeater.prototype = {
 
   updateMessageCounter: function() {
       this.messageCount++;
-      if (config.REPEATED_CHAT_MSG_LIMIT < this.messageCount) {
-          this.shouldSend = true;
-      }
       logger.info("MessageCounter : " , this.messageCount, this.shouldSend );
 
+  },
+
+  shouldSend: function() {
+  	if (config.REPEATED_CHAT_MSG_LIMIT < this.messageCount) {
+          return true;
+     }
+     return false;
   }
 }
 
