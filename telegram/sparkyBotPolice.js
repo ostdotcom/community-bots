@@ -376,7 +376,7 @@ function updateKickedBotsData() {
 
 
 config.REPEATE_IN_CHATS.forEach(function ( chatId ) {
-	var repeater =  new Repeater(chatId, config.MESSAGE_TO_REPEATE, config.REPEATE_MESSAGE_SEC, sparky);
+	var repeater =  new Repeater(chatId, config.MESSAGE_TO_REPEATE, config.REPEATE_MESSAGE_SEC, sparky, { parse_mode: "html"});
 	repeater.start();
 });
 

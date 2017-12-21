@@ -1,15 +1,17 @@
 const logger = require('../helpers/CustomConsoleLogger');
 const config = require('../config/telegram_config');
-function Repeater( chatId, message, repeateDurationInSec, slimbot) {
+function Repeater( chatId, message, repeateDurationInSec, slimbot, sendOptions) {
   this.message = message;
   this.repeateDurationInSec = repeateDurationInSec;
   this.slimbot = slimbot;
   this.chatId = chatId;
+  this.sendOptions = sendOptions;
 }
 Repeater.prototype = {
   slimbot: null,
   message: null,
   chatId: null,
+  sendOptions: null,
   repeateDurationInSec: -1,
   isPaused: true,
   start: function () {
@@ -52,7 +54,7 @@ Repeater.prototype = {
 
     //Send the message.
     oThis.slimbot
-      .sendMessage( oThis.chatId, messageToSend )
+      .sendMessage( oThis.chatId, messageToSend, oThis.sendOptions )
       .then(_ => {
         logger.info("\t\tSRepeated message on chatId : " , oThis.chatId );
       })
