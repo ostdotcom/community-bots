@@ -21,7 +21,7 @@ const development = {
   ,REPEATE_IN_CHATS : [ st_dev_community_1 ]
   ,REPEATE_MESSAGE_SEC: 1 * 10
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
-  
+
   //Scan user chats
   ,SCAN_USERS_CHATS : [ st_dev_community_1 ]
 
@@ -31,7 +31,7 @@ const development = {
   //REPEATED CHAT PIN MSG ID
   ,REPEATE_PINNED_MSG_TEXT : "Thanks for a successful token sale! The sale has ended. The Simple Token team has provided answers to many of the most common questions. [link]"
   ,REPEATED_CHAT_PIN_MSG_ID : st_dev_community_1
-  
+
   ,PUBLIC_COMMUNITY_USERNAME : "stdevcommunity"
 
   ,REPEATED_CHAT_MSG_LIMIT : 2
@@ -59,7 +59,7 @@ const production = {
 
   //Repeate Message Config
   ,REPEATE_IN_CHATS : [ CHAT_SIMPLETOKEN_COMMUNITY ]
-  ,REPEATE_MESSAGE_SEC: 12*60*60
+  ,REPEATE_MESSAGE_SEC: 3*60*60
   ,MESSAGE_TO_REPEATE: fs.readFileSync('../telegram/messages/ScamAlert.txt', 'utf8')
 
   //Scan user chats
@@ -93,7 +93,7 @@ module.exports = exportedConfig;
 
 /* Other Thinngs that might be usefull. */
 
-// rachins bot 
+// rachins bot
 const OfficiaLSimpLeToken_bot = "330790032:AAH2l8hR3bw2t3yM_mRalgQKTQty1qH5h1Q";
 // @benjaminbollens_bot  t.me/benjaminbollens_bot
 const BEN_BADBOT_ID = 383374001;

@@ -1,11 +1,24 @@
 ***
 
-Welcome to the OST Community on Telegram. This channel is moderated by our team.
+The OST team is 100% focused on client implementations and no longer actively monitoring this channel. We are not liable for the content posted on this channel. Please beware of scammers. OST | Simple Token team will never message you and ask for personal details!
 
-OST powers the future of brand loyalty. Innovators use OST Platform to reward behaviours and increase engagement with Brand Currency. It’s a complete set of developer tools that any company can integrate without any in-house blockchain expertise. Learn more at https://ost.com.
 
-🙋Join our announcement channel: All the OST news, none of the noise.
-https://t.me/OSTdotcomnews
+We encourage you to seek other forums for OST Platform product questions, including:
 
-<b>ADVISORY</b> Note: This is NOT a trading channel and we cannot allow trading or price discussions to take place here, please use any other unofficial channel.
-Off topic posts will be removed.
+
+  -  For OST info https://ost.com and developer resources: https://dev.ost.com
+  -  For help integrating OST Platform and for FAQ: https://help.ost.com
+  -  For OST Platform integration questions to OST developers (only dev questions): https://gitter.im/ostdotcom/OST-Platform
+  -  For OpenST protocols questions with OpenST developers (only dev questions): https://gitter.im/OpenSTFoundation/SimpleToken
+  -  Github https://github.com/openst and https://github.com/ostdotcom
+  -  Block explorer: https://view.ost.com
+  -  For partnering inquiries partners@ost.com
+  -  For general OST info: https://ost.com and info@ost.com
+  -  Please follow OST on official Social Media channels:
+     -  🔥Telegram Announce channel https://t.me/OSTdotcomnews
+     -  👤 Twitter – https://twitter.com/OSTdotcom
+     -  📌 Medium – https://medium.com/ostdotcom
+     -  🖥 Facebook – https://www.facebook.com/OST
+     -  🎥 YouTube – https://www.youtube.com/OSTdotcom
+
+Thank you for your continuous support! We look forward to future AMAs and to sharing implementation success stories with the community.
